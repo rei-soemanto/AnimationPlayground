@@ -38,10 +38,10 @@ class PhysicsViewModel: ObservableObject {
         
         for _ in 0..<20 {
             let p = Particle(
-                x: CGFloat.random(in: -100...100),
-                y: CGFloat.random(in: -100...100),
+                x: 0,
+                y: 0,
                 color: colors.randomElement() ?? .blue,
-                scale: CGFloat.random(in: 0.2...1.0),
+                scale: 0.0,
                 opacity: 1.0
             )
             newParticles.append(p)
@@ -49,12 +49,23 @@ class PhysicsViewModel: ObservableObject {
         
         particles = newParticles
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            withAnimation(.easeOut(duration: 1.0)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+            withAnimation(.easeOut(duration: 0.4)) {
                 for i in 0..<self.particles.count {
-                    self.particles[i].x *= 1.5
-                    self.particles[i].y *= 1.5
+                    self.particles[i].x = CGFloat.random(in: -120...120)
+                    self.particles[i].y = CGFloat.random(in: -120...120)
+                    self.particles[i].scale = CGFloat.random(in: 0.5...1.5)
+                }
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.45) {
+            withAnimation(.easeIn(duration: 0.5)) {
+                for i in 0..<self.particles.count {
+                    self.particles[i].x *= 1.2
+                    self.particles[i].y *= 1.2
                     self.particles[i].opacity = 0
+                    self.particles[i].scale = 0.1
                 }
             }
         }
