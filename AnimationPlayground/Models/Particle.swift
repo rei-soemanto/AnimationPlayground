@@ -1,3 +1,10 @@
+//
+//  Particle.swift
+//  AnimationPlayground
+//
+//  Created by Rei Soemanto on 16/04/26.
+//
+
 import SwiftUI
 
 struct Particle: Identifiable {

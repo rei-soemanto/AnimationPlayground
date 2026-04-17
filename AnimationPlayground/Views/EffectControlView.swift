@@ -1,3 +1,10 @@
+//
+//  EffectControlView.swift
+//  AnimationPlayground
+//
+//  Created by Rei Soemanto on 16/04/26.
+//
+
 import SwiftUI
 
 struct EffectControlView: View {
@@ -6,6 +13,7 @@ struct EffectControlView: View {
     @Binding var sliderVal: Double
     let sliderRange: ClosedRange<Double>
     @Binding var toggle: Bool
+    let sliderColor: Color
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -15,25 +23,25 @@ struct EffectControlView: View {
                 Toggle("", isOn: $toggle).labelsHidden()
             }
             Slider(value: $sliderVal, in: sliderRange)
-                .accentColor(.purple)
+                .accentColor(sliderColor)
         }
         .padding()
-        .background(Color.gray.opacity(0.1))
+        .background(Color.white)
+        .shadow(color: .black.opacity(0.05), radius: 5, x: 0, y: 2)
         .cornerRadius(12)
     }
 }
 
-// Extension to handle the CGFloat version seamlessly
 extension EffectControlView {
-    init(title: String, icon: String, sliderVal: Binding<CGFloat>, sliderRange: ClosedRange<CGFloat>, toggle: Binding<Bool>) {
+    init(title: String, icon: String, sliderVal: Binding<CGFloat>, sliderRange: ClosedRange<CGFloat>, toggle: Binding<Bool>, sliderColor: Color) {
         self.title = title
         self.icon = icon
-        // Convert CGFloat binding to Double binding automatically
         self._sliderVal = Binding<Double>(
             get: { Double(sliderVal.wrappedValue) },
             set: { sliderVal.wrappedValue = CGFloat($0) }
         )
         self.sliderRange = Double(sliderRange.lowerBound)...Double(sliderRange.upperBound)
         self._toggle = toggle
+        self.sliderColor = sliderColor
     }
 }

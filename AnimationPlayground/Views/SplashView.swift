@@ -5,7 +5,6 @@
 //  Created by Rei Soemanto on 16/04/26.
 //
 
-
 import SwiftUI
 
 struct SplashView: View {
@@ -16,43 +15,67 @@ struct SplashView: View {
     @State private var logoRotation: Double = -180
     @State private var textOpacity: Double = 0
     @State private var buttonOpacity: Double = 0
-    @State private var buttonBreathingScale: CGFloat = 1.0
+    @State private var isBreathing: Bool = false
     
     var body: some View {
         ZStack {
-            // Rotating Background
-            AngularGradient(gradient: Gradient(colors: [.purple, .blue, .teal, .purple]), center: .center, angle: .degrees(bgRotation))
-                .ignoresSafeArea()
-                .onAppear {
-                    withAnimation(.linear(duration: 10).repeatForever(autoreverses: false)) {
-                        bgRotation = 360
-                    }
+            AngularGradient(
+                gradient: Gradient(colors: [.purple, .blue, .teal, .purple]),
+                center: .center,
+                angle: .degrees(bgRotation)
+            )
+            .ignoresSafeArea()
+            .onAppear {
+                withAnimation(.linear(duration: 10).repeatForever(autoreverses: false)) {
+                    bgRotation = 360
                 }
+            }
+            
+            Color.black.opacity(0.5)
+                .ignoresSafeArea()
             
             VStack(spacing: 20) {
                 Spacer()
                 
-                // Logo
                 Image(systemName: "sparkles")
                     .font(.system(size: 80))
-                    .foregroundColor(.white)
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.white, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        )
+                    )
+                    .shadow(color: .white.opacity(0.8), radius: 20)
                     .scaleEffect(logoScale)
                     .rotationEffect(.degrees(logoRotation))
                 
-                // Titles
                 VStack(spacing: 8) {
                     Text("Animation")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
+                        .font(.custom("AvenirNext-Heavy", size: 40))
+                            .bold()
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.white, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
                     Text("Playground")
-                        .font(.title3)
+                        .font(.title3).bold()
+                        .foregroundStyle(
+                            LinearGradient(
+                                colors: [.white, .cyan],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                        )
                 }
                 .foregroundColor(.white)
                 .opacity(textOpacity)
                 
                 Spacer()
                 
-                // Enter Button
                 Button(action: {
                     withAnimation { isActive = false }
                 }) {
@@ -66,15 +89,14 @@ struct SplashView: View {
                     .padding(.horizontal, 10)
                     .background(Color.white)
                     .clipShape(Capsule())
-                    .shadow(color: .white.opacity(0.8), radius: 10)
-                    .scaleEffect(buttonBreathingScale)
+                    .shadow(color: .cyan.opacity(isBreathing ? 1.0 : 0.0), radius: isBreathing ? 30 : 0)
+                    .scaleEffect(isBreathing ? 1.05 : 1.0)
                 }
                 .opacity(buttonOpacity)
                 .padding(.bottom, 50)
             }
         }
         .onAppear {
-            // Sequence Animations
             withAnimation(.spring(response: 0.6, dampingFraction: 0.6).delay(0.2)) {
                 logoScale = 1.0
                 logoRotation = 0
@@ -85,10 +107,13 @@ struct SplashView: View {
             withAnimation(.easeIn(duration: 0.5).delay(1.5)) {
                 buttonOpacity = 1.0
             }
-            // Button breathing loop
-            withAnimation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true).delay(2.0)) {
-                buttonBreathingScale = 1.1
+            withAnimation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true).delay(2.0)) {
+                isBreathing = true
             }
         }
     }
+}
+
+#Preview {
+    SplashView(isActive: .constant(true))
 }

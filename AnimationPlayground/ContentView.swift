@@ -8,14 +8,27 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var isSplashActive = true
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Group {
+            if isSplashActive {
+                SplashView(isActive: $isSplashActive)
+            } else {
+                TabView {
+                    TransformLabView()
+                        .tabItem {
+                            Label("Transform Lab", systemImage: "wand.and.stars")
+                        }
+                    
+                    PhysicsLabView()
+                        .tabItem {
+                            Label("Physics Lab", systemImage: "bolt.circle.fill")
+                        }
+                }
+                .tint(.purple)
+            }
         }
-        .padding()
     }
 }
 

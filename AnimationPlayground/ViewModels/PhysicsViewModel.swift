@@ -1,29 +1,32 @@
+//
+//  PhysicsViewModel.swift
+//  AnimationPlayground
+//
+//  Created by Rei Soemanto on 16/04/26.
+//
+
 import SwiftUI
+import Combine
 
 class PhysicsViewModel: ObservableObject {
-    // Spring Effect
     @Published var springOffset: CGFloat = 0.0
     
-    // Particle Burst
+    @Published var maxSpringDistance: CGFloat = 200.0
+    
     @Published var particles: [Particle] = []
     
-    // Stagger Reveal
     @Published var cardVisibility: [Bool] = Array(repeating: false, count: 9)
-    let staggerColors: [Color] = [.red, .orange, .yellow, .green, .cyan, .blue, .purple, .pink, .red.opacity(0.7)]
+    let staggerColors: [Color] = [.red, .orange, .yellow, .green, .cyan, .blue, .indigo, .purple, .pink]
     
-    // Morph Shape
     @Published var morphAmount: CGFloat = 0.0
     
-    // 3D Card Flip
     @Published var isCardFlipped: Bool = false
     
     func launchSpring() {
-        // Teleport to the right instantly
-        springOffset = 150
+        springOffset = maxSpringDistance
         
-        // Spring back to original position
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-            withAnimation(.interpolatingSpring(stiffness: 100, damping: 5)) {
+            withAnimation(.spring(response: 0.6, dampingFraction: 0.4)) {
                 self.springOffset = 0
             }
         }
@@ -46,7 +49,6 @@ class PhysicsViewModel: ObservableObject {
         
         particles = newParticles
         
-        // Fade and move out
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
             withAnimation(.easeOut(duration: 1.0)) {
                 for i in 0..<self.particles.count {
@@ -59,7 +61,6 @@ class PhysicsViewModel: ObservableObject {
     }
     
     func toggleStaggerReveal(show: Bool) {
-        // 3x3 Grid, calculating diagonal delay based on row + col
         for index in 0..<9 {
             let row = index / 3
             let col = index % 3
