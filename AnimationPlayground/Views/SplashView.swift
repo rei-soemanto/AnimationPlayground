@@ -33,12 +33,24 @@ struct SplashView: View {
             
             Color.black.opacity(0.5)
                 .ignoresSafeArea()
-            
-            VStack(spacing: 20) {
-                Spacer()
                 
-                Image(systemName: "sparkles")
-                    .font(.system(size: 80))
+            Image(systemName: "sparkles")
+                .font(.system(size: 80))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [.white, .cyan],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
+                )
+                .shadow(color: .white.opacity(10), radius: 20)
+                .scaleEffect(logoScale)
+                .rotationEffect(.degrees(logoRotation))
+            
+            VStack(spacing: 8) {
+                Text("Animation")
+                    .font(.custom("AvenirNext-Heavy", size: 40))
+                        .bold()
                     .foregroundStyle(
                         LinearGradient(
                             colors: [.white, .cyan],
@@ -46,34 +58,21 @@ struct SplashView: View {
                             endPoint: .trailing
                         )
                     )
-                    .shadow(color: .white.opacity(0.8), radius: 20)
-                    .scaleEffect(logoScale)
-                    .rotationEffect(.degrees(logoRotation))
-                
-                VStack(spacing: 8) {
-                    Text("Animation")
-                        .font(.custom("AvenirNext-Heavy", size: 40))
-                            .bold()
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.white, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
+                Text("Playground")
+                    .font(.title3).bold()
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [.white, .cyan],
+                            startPoint: .leading,
+                            endPoint: .trailing
                         )
-                    Text("Playground")
-                        .font(.title3).bold()
-                        .foregroundStyle(
-                            LinearGradient(
-                                colors: [.white, .cyan],
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            )
-                        )
-                }
-                .foregroundColor(.white)
-                .opacity(textOpacity)
+                    )
+            }
+            .foregroundColor(.white)
+            .opacity(textOpacity)
+            .offset(y: 100)
                 
+            VStack {
                 Spacer()
                 
                 Button(action: {
@@ -95,6 +94,7 @@ struct SplashView: View {
                 .opacity(buttonOpacity)
                 .padding(.bottom, 50)
             }
+            
         }
         .onAppear {
             withAnimation(.spring(response: 0.6, dampingFraction: 0.6).delay(0.2)) {
