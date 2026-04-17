@@ -14,6 +14,8 @@ struct ContentView: View {
         Group {
             if isSplashActive {
                 SplashView(isActive: $isSplashActive)
+                    .transition(.move(edge: .top))
+                    .zIndex(1)
             } else {
                 TabView {
                     TransformLabView()

@@ -75,8 +75,8 @@ class TransformViewModel: ObservableObject {
     
     func toggleOpacity(isActive: Bool) {
         if isActive {
-            baseOpacity = opacityValue
-            opacityDecreasing = true
+            opacityDecreasing = opacityValue > 0.0
+            
             opacityTimer = Timer.publish(every: 0.016, on: .main, in: .common).autoconnect().sink { [weak self] _ in
                 guard let self = self else { return }
                 let step = 0.015
@@ -91,7 +91,6 @@ class TransformViewModel: ObservableObject {
             }
         } else {
             opacityTimer?.cancel()
-            opacityValue = baseOpacity
         }
     }
     

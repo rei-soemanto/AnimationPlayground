@@ -76,7 +76,7 @@ struct SplashView: View {
                 Spacer()
                 
                 Button(action: {
-                    withAnimation { isActive = false }
+                    withAnimation(.easeInOut(duration: 0.6)) { isActive = false }
                 }) {
                     HStack {
                         Text("Enter Playground")

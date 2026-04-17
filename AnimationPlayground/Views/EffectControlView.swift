@@ -23,7 +23,7 @@ struct EffectControlView: View {
                 Toggle("", isOn: $toggle).labelsHidden()
             }
             Slider(value: $sliderVal, in: sliderRange)
-                .accentColor(sliderColor)
+                .tint(sliderColor)
         }
         .padding()
         .background(Color.white)
